@@ -1,0 +1,105 @@
+import tkinter
+from tkinter import ttk
+
+janela = tkinter.Tk()
+janela.title("Pedidos Interior")
+
+# Variável global para armazenar os dados salvos
+dados_salvos = []
+
+
+def enter_data():
+    firstname = first_name_combobox.get()
+    lastname = last_name_entry.get()
+    title = title_combobox.get()
+    obb = observa_name_entry.get()
+    trans = title_combobox.get()
+
+    ppj = produtoo_entry.get("1.0", tkinter.END)  # Corrigido aqui
+
+    # Adiciona os dados salvos na lista
+    dados_salvos.append({
+        'Vendedor': firstname,
+        'Cliente': lastname,
+        'Transportadora': trans,
+        'Observação': obb,
+        'Produtos': ppj
+    })
+
+    print('Vendedor: ', firstname, '\nCliente: ', lastname, '\nTransportadora: ', trans, '\nObeservação:', obb)
+    print('=================================================')
+    print('Produtos', ppj)
+
+
+def view_saved_data():
+    saved_data_window = tkinter.Toplevel(janela)
+    saved_data_window.title("Pedidos Salvos")
+
+    # Exibe os dados salvos na nova janela
+    for i, data in enumerate(dados_salvos):
+        label = tkinter.Label(saved_data_window, text=f'PEDIDO #{i+1}')
+        label.pack()
+
+        for key, value in data.items():
+            info_label = tkinter.Label(saved_data_window, text=f'{key}: {value}')
+            info_label.pack()
+
+        separator = tkinter.Label(saved_data_window, text='=================================================')
+        separator.pack()
+
+
+frame = tkinter.Frame(janela)
+frame.pack()
+user_info_frame = tkinter.LabelFrame(frame, text='Informações')
+user_info_frame.grid(row=0, column=0, padx=20, pady=20)
+
+last_name_label = tkinter.Label(user_info_frame, text='Cliente')
+last_name_label.grid(row=2, column=0)
+last_name_entry = tkinter.Entry(user_info_frame)
+last_name_entry.grid(row=3, column=0)
+
+title_label = tkinter.Label(user_info_frame, text='Transportadora ')
+title_combobox = ttk.Combobox(user_info_frame, values=['', 'Cruzeiro', 'KM', 'Queiroz', 'Outro..'])
+title_label.grid(row=0, column=3)
+title_combobox.grid(row=1, column=3)
+
+first_name_label = tkinter.Label(user_info_frame, text='Vendedor ')
+first_name_combobox = ttk.Combobox(user_info_frame, values=['', 'Ademir', 'Grazy', 'Daniel'])
+first_name_combobox.grid(row=1, column=0)
+first_name_label.grid(row=0, column=0)
+
+observa_name_label = tkinter.Label(user_info_frame, text='Observação')
+observa_name_label.grid(row=2, column=3)
+observa_name_entry = tkinter.Entry(user_info_frame)
+observa_name_entry.grid(row=3, column=3)
+
+for widget in user_info_frame.winfo_children():
+    widget.grid_configure(pady=5, padx=10)
+
+# salvando informações do curso
+courses_frame = tkinter.LabelFrame(frame)
+courses_frame.grid(row=1, column=0, sticky="news", pady=20, padx=20)
+
+registered_label = tkinter.Label(courses_frame, text="Registro de estatos")
+registered_check = tkinter.Checkbutton(courses_frame, text='Pronto para envio')
+registered_label.grid(row=0, column=0)
+registered_check.grid(row=1, column=0)
+
+# Entrada de texto
+product_frame = tkinter.LabelFrame(frame)
+product_frame.grid(row=2, column=0, sticky="news", pady=20, padx=20)
+
+produto_label = tkinter.Label(product_frame, text='Produto')
+produto_label.grid(row=0, column=0)
+produtoo_entry = tkinter.Text(product_frame, width=30, height=10)
+produtoo_entry.grid(row=1, column=0, pady=20, padx=20)
+
+# botão
+button = tkinter.Button(frame, text='Enviar', command=enter_data)
+button.grid(row=3, column=0, sticky='news', padx=20, pady=20)
+
+view_button = tkinter.Button(frame, text='Ver Dados Salvos', command=view_saved_data)
+view_button.grid(row=4, column=0, sticky='news', padx=20, pady=20)
+
+janela.geometry('500x700+200+200')
+janela.mainloop()
